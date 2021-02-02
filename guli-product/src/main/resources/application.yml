@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/guli-pms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: root
+
+# MapperScan
+# sql”≥…‰Œƒº˛Œª÷√
+mybatis-plus:
+  mapper-locations: classpath:/mappers/*.xml
+  global-config:
+    db-config:
+      id-type: auto
