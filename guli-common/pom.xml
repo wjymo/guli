@@ -70,7 +70,17 @@
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+            <!--<exclusions>
+                <exclusion>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+                </exclusion>
+            </exclusions>-->
         </dependency>
+        <!--<dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-loadbalancer</artifactId>
+        </dependency>-->
         <!--        配置中心来做配置管理-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -86,5 +96,10 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
+        <!--需要引入该jar才能使bootstrap配置文件生效-->
+        <!--<dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
+        </dependency>-->
     </dependencies>
 </project>

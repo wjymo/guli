@@ -4,11 +4,17 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: root
-
-# MapperScan
-# sql”≥…‰Œƒº˛Œª÷√
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+#        namespace: 93855e0e-5117-4970-994f-e8a0736573b7
+  application:
+    name: guli-product
 mybatis-plus:
   mapper-locations: classpath:/mappers/*.xml
   global-config:
     db-config:
       id-type: auto
+server:
+  port: 10000

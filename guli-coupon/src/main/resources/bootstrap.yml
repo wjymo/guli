@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: guli-coupon
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
+        namespace: 4d8e3a92-3496-4a6d-b146-5c6b523ae9f2
+#  profiles:
+#    active: dev
+
+
+#coupon:
+#  user:
+#    name: zn
+#    age: 18

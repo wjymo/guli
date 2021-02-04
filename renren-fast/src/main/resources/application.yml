@@ -13,6 +13,10 @@ spring:
   # 环境 dev|test|prod
   profiles:
     active: dev
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
   # jackson时间格式化
   jackson:
     time-zone: GMT+8
@@ -37,6 +41,8 @@ spring:
         min-idle: 5       # 连接池中的最小空闲连接
   mvc:
     throw-exception-if-no-handler-found: true
+  application:
+    name: renren-fast
 #  resources:
 #    add-mappings: false
 

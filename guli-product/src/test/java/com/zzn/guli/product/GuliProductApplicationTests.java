@@ -16,8 +16,8 @@ class GuliProductApplicationTests {
     void contextLoads() {
         BrandEntity brandEntity = new BrandEntity();
         brandEntity.setBrandId(1L);
-        brandEntity.setDescript("先知先");
-        brandService.save(brandEntity);
+        brandEntity.setDescript("先知先3");
+        brandService.updateById(brandEntity);
     }
 
 }

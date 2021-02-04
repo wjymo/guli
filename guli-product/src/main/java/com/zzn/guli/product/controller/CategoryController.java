@@ -1,6 +1,7 @@
 package com.zzn.guli.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,14 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    /**
+     * 列表
+     */
+    @RequestMapping("/list/tree")
+    public List<CategoryEntity> list(){
+        List<CategoryEntity> categoryEntities = categoryService.listWithTree();
+        return categoryEntities;
+    }
     /**
      * 列表
      */
