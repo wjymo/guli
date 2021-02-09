@@ -30,6 +30,7 @@
         <module>guli-common</module>
         <module>guli-coupon-api</module>
         <module>guli-gateway</module>
+        <module>guli-auth</module>
     </modules>
     <dependencyManagement>
         <dependencies>
