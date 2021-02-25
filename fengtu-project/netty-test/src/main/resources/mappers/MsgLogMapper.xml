@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzn.nettytest.dao.MsgLogMapper">
+
+
+
+    <!--<select id="getFailList" resultType="com.zzn.nettytest.bean.MsgLog">
+        select
+
+        t1.expire_date AS expireDate
+        from risk_annualexam_history t1
+        inner join exp_car car on t1.carplate = car.car_no
+        inner join risk_transport trans on car.org = trans.org
+        right join (select DISTINCT carplate, max(annual_time) as annual_time from risk_annualexam_history
+         <where>
+             carplate in
+             <foreach collection="carplates" open="(" close=")" item="item" separator=",">
+                 #{item}
+             </foreach>
+             and del_flag = 0
+         </where>
+         GROUP BY carplate) t2 on t1.carplate = t2.carplate and t1.annual_time = t2.annual_time
+    </select>-->
+
+</mapper>

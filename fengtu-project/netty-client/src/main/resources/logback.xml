@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!-- 日志名称 -->
+	<property name="FILE_NAME" value="netty-client" />
+	<!-- 文件输出格式 -->
+	<property name="PATTERN" value="%-5p [%X{ip}] [%X{uuId}] [%X{userName}] %d [%c:%L] - %m%n" />
+	<!-- test文件路径 -->
+	<property name="FILE_PATH" value="D:/var/logs/supply" />
+
+
+　　　　　　<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    　　　　　　<encoder>
+    　　　　　　　　<pattern>${PATTERN}</pattern>
+    　　　　　　</encoder>
+　　　　　　</appender>
+
+　　　　　　<appender name="FILE" class="ch.qos.logback.core.FileAppender">
+　　　　　　　　<file>${FILE_PATH}/${FILE_NAME}.log</file>
+                <!--<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                    &lt;!&ndash;日志文件输出的文件名 &ndash;&gt;
+                    <FileNamePattern>${FILE_PATH}/${FILE_NAME}.log_%d{yyyy-MM-dd}.%i.log.zip</FileNamePattern>
+                    &lt;!&ndash;日志文件保留天数 &ndash;&gt;
+                    <MaxHistory>1</MaxHistory>
+                    <MaxFileSize>200MB</MaxFileSize>
+                    <totalSizeCap>1GB</totalSizeCap>
+                </rollingPolicy>-->
+　　　　　　　　<append>true</append>
+　　　　　　　　<encoder>
+　　　　　　　　　　<pattern>${PATTERN}</pattern>
+　　　　　　　　</encoder>
+　　　　　　</appender>
+
+
+		<root level="info">
+			<appender-ref ref="STDOUT" />
+			<appender-ref ref="FILE" />
+			<!--<appender-ref ref="ErrorLog" />-->
+		</root>
+
+</configuration>
