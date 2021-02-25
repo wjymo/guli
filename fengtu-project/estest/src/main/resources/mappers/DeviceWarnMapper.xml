@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzn.estest.dao.DeviceWarnMapper">
+
+    <select id="getEsResultById" parameterType="long"
+            resultType="com.zzn.estest.vo.RiskDeDeviceWarnVo">
+        SELECT
+        g.id as warnId,
+        g.tenant_id tenantId,
+        g.TASK_STATUS taskStatus,
+        g.AUDIT_RESULT auditResult,
+        g.pai_code as carplate,
+        g.org,
+        <!--org.name as orgName,-->
+        g.alarm_time as alarmTime,
+        g.comm_alarm_type as alarmType,
+        g.comm_subtype as alarmSubType,
+        g.alarm_location as alarmLocation,
+        g.speed,
+        g.imei,
+        g.exist_flag as existFlag,
+        g.fphotos,
+        g.bPhotos,
+        g.origin_file_name as originFileName,
+        g.lng,
+        g.lat,
+        g.address,
+        g.brief_address as briefAddress,
+        g.alarm_level as alarmLevel
+        FROM
+        de_device_warn g
+        <!--LEFT join exp_car car on g.pai_code = car.car_no-->
+        <!--LEFT JOIN ua_sys_org org ON car.org = org.id-->
+        where g.id=#{id}
+    </select>
+
+
+    <!--<select id="selectPageList" parameterType="com.zzn.estest.query.RiskDeDeviceWarnQuery"
+            resultType="com.zzn.estest.vo.RiskDeDeviceWarnVo">
+        SELECT
+        g.id as warnId,
+        g.tenant_id tenantId,
+        g.AUDIT_RESULT auditResult,
+        g.pai_code as carplate,
+        g.org,
+        org.name as orgName,
+        g.alarm_time as alarmTime,
+        g.comm_alarm_type as alarmType,
+        g.comm_subtype as alarmSubType,
+        g.alarm_location as alarmLocation,
+        g.speed,
+        g.imei,
+        g.exist_flag as existFlag,
+        g.fphotos,
+        g.bPhotos,
+        g.origin_file_name as originFileName,
+        g.lng,
+        g.lat,
+        g.address,
+        g.brief_address as briefAddress,
+        g.alarm_level as alarmLevel
+        FROM
+        de_device_warn g
+        LEFT join exp_car car on g.pai_code = car.car_no
+        LEFT JOIN ua_sys_org org ON car.org = org.id
+        WHERE
+        g.TASK_STATUS IN (2, 3)
+        AND g.tenant_id = #{tenantId}
+        AND g.AUDIT_RESULT <![CDATA[<>]]> 2
+        <if test="startTime != null and endTime != null">
+            AND g.alarm_time <![CDATA[>=]]> #{startTime}
+            AND g.alarm_time <![CDATA[<=]]> #{endTime}
+        </if>
+        <if test="alarmType != null and alarmType != ''">
+            AND g.comm_alarm_type = #{alarmType}
+        </if>
+        <if test="alarmSubType != null and alarmSubType != ''">
+            AND g.comm_subtype = #{alarmSubType}
+        </if>
+        <if test="carplate != null and carplate != ''">
+            AND g.pai_code like CONCAT('%',#{carplate},'%')
+        </if>
+        <if test="alarmLevel != null and alarmLevel != ''">
+            AND g.alarm_level = #{alarmLevel}
+        </if>
+        <if test="orgList != null and orgList.size() > 0">
+            AND g.org in
+            <foreach collection="orgList" open="(" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </if>
+        <if test="offset != 100000 and pageSize != ''">
+            limit #{offset}, #{pageSize}
+        </if>
+    </select>-->
+
+
+</mapper>

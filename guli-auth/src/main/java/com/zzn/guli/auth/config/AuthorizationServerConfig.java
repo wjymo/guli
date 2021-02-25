@@ -31,7 +31,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .secret(passwordEncoder().encode("123"))
                 .scopes("read","write")
                 .resourceIds("coupon")
-                .authorizedGrantTypes("password","refresh_token");
+                .authorizedGrantTypes("client_credentials", "refresh_token", "password", "authorization_code")
+                .accessTokenValiditySeconds(20 * 60)
+                .refreshTokenValiditySeconds(60*60)
+        ;
     }
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
@@ -39,6 +42,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .authenticationManager(authenticationManager)
 //                .userDetailsService(userDetailsService())
                 .tokenStore(tokenStore())
+//                .tokenEnhancer(jwtAccessTokenConverter())
                 .accessTokenConverter(jwtAccessTokenConverter());
     }
     @Override

@@ -1,0 +1,206 @@
+<properties>
+    <property name="getByQuery">
+        <![CDATA[
+        {
+              "from": #[pageNo],
+              "size": #[pageSize],
+              "query": {
+                "constant_score": {
+                  "filter": {
+                    "bool": {
+                      "must": [
+                      #if($carplate && $carplate != '')
+                        {
+                          "match": {
+                            "carplate": {
+                              "query": #[carplate]
+                            }
+                          }
+                        },
+                        #end
+                        #if($alarmType && $alarmType != '')
+                        {
+                          "term": {
+                            "alarmType": {
+                              "value": #[alarmType]
+                            }
+                          }
+                        },
+                        #end
+                        #if($alarmSubType && $alarmSubType != '')
+                        {
+                          "term": {
+                            "alarmSubType": {
+                              "value": ${alarmSubType}
+                            }
+                          }
+                        } ,
+                        #end
+                        #if($alarmLevel && $alarmLevel != '')
+                        {
+                          "term": {
+                            "alarmLevel": {
+                              "value": ${alarmLevel}
+                            }
+                          }
+                        },
+                        #end
+                        #if($tenantId && $tenantId != '')
+                        {
+                          "term": {
+                            "tenantId": {
+                              "value": #[tenantId]
+                            }
+                          }
+                        },
+                        #end
+                        #if($org && $org != '')
+                        {
+                          "term": {
+                            "org": {
+                              "value": #[org]
+                            }
+                          }
+                        },
+                        #end
+                        {
+                          "range": {
+                            "alarmTime": {
+                              "from": #[startTime],
+                              "to": #[endTime]
+                            }
+                          }
+                        },
+                        {
+                          "terms": {
+                            "taskStatus": [2,3]
+                          }
+                        }
+                      ],
+                      "must_not": [
+                        {
+                          "term": {
+                            "auditResult": {
+                              "value": 2
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "sort": [
+                {
+                  "alarmTime": {
+                    "order": "desc"
+                  }
+                }
+              ]
+            }
+        ]]>
+    </property>
+
+    <property name="getByQueryNoAudit">
+        <![CDATA[
+        {
+              "from": #[offset],
+              "size": #[pageSize],
+              "query": {
+                "constant_score": {
+                  "filter": {
+                    "bool": {
+                      "must": [
+                      #if($carplate && $carplate != '')
+                        {
+                          "match": {
+                            "carplate": {
+                              "query": #[carplate]
+                            }
+                          }
+                        },
+                        #end
+                        #if($alarmType && $alarmType != '')
+                        {
+                          "term": {
+                            "alarmType": {
+                              "value": #[alarmType]
+                            }
+                          }
+                        },
+                        #end
+                        #if($alarmSubType && $alarmSubType != '')
+                        {
+                          "term": {
+                            "alarmSubType": {
+                              "value": ${alarmSubType}
+                            }
+                          }
+                        } ,
+                        #end
+                        #if($alarmLevel && $alarmLevel != '')
+                        {
+                          "term": {
+                            "alarmLevel": {
+                              "value": ${alarmLevel}
+                            }
+                          }
+                        },
+                        #end
+                        #if($tenantId && $tenantId != '')
+                        {
+                          "term": {
+                            "tenantId": {
+                              "value": #[tenantId]
+                            }
+                          }
+                        },
+                        #end
+                        #if($org && $org != '')
+                        {
+                          "term": {
+                            "org": {
+                              "value": #[org]
+                            }
+                          }
+                        },
+                        #end
+                        #if($orgList && $orgList.Count!=0)
+                        {
+                          "terms":{
+                            "org":[
+                                #foreach($org in $orgList)
+                                    #[orgList[$velocityCount]]
+                                    #if($velocityCount+1 != $orgList.size()),#end
+                               #end
+                            ]
+                          }
+                        },
+                        #end
+                        {
+                          "range": {
+                            "alarmTime": {
+                              "from": #[beginDate],
+                              "to": #[endDate]
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "sort": [
+                {
+                  "alarmTime": {
+                    "order": "desc"
+                  }
+                }
+              ]
+            }
+        ]]>
+    </property>
+<!--
+    orgList为2个时，$velocityCount,$orgList.size()  0，2；1,2
+-->
+</properties>

@@ -11,6 +11,8 @@ package io.renren.common.utils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 /**
@@ -48,4 +50,8 @@ public class SpringContextUtils implements ApplicationContextAware {
 		return applicationContext.getType(name);
 	}
 
+	public static Environment getEnvironment(){
+		Environment environment = applicationContext.getEnvironment();
+		return environment;
+	}
 }

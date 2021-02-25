@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增告警信息</title>
+</head>
+<body>
+
+<h1>新增告警信息</h1>
+<input type="text" placeholder="请输入设备号" name="imei" value="12345">
+<input type="text" placeholder="请输入车牌号" name="paiCode" value="鄂A1235C">
+<button id="submit-add">新增告警信息</button>
+<br/>
+<hr/>
+
+<input type="text" placeholder="请输入id" name="id" value="458804">
+<button id="submit-update">修改告警信息</button>
+<br/>
+<hr/>
+<button id="submit-del">删除告警信息</button>
+<br/>
+<hr/>
+<br/>
+<hr/>
+<span>请输入indexName:  </span><input type="text"  placeholder="请输入indexName" name="indexName" value="device_warn_2021-01-2">
+<br/>
+<span>请输入开始时间:  </span><input type="text"  placeholder="请输入开始时间" name="query-startTime" value="2021-01-07 07:16:58">
+<br/>
+<span>请输入结束时间:  </span><input type="text" placeholder="请输入结束时间" name="query-endTime" value="2021-01-11 07:16:58">
+<br/>
+<span>请输入告警类型:  </span><input type="text" placeholder="请输入告警类型" name="query-alarmType" value="bsd">
+<br/>
+<span>请输入告警子类型:  </span><input type="text" placeholder="请输入告警子类型" name="query-alarmSubType" value="3">
+<br/>
+<span>请输入组织机构:  </span><input type="number" placeholder="请输入组织机构" name="query-org" value="3411">
+<br/>
+<span>请输入告警等级:  </span><input type="text" placeholder="请输入告警等级" name="query-alarmLevel" value="2">
+<br/>
+<span>请输入租户id:  </span><input type="text" placeholder="请输入租户id" name="query-tenantId" value="YZFK">
+<br/>
+<span>请输入车牌号:  </span><input type="text" placeholder="请输入车牌号" name="query-carplate" value="苏">
+<br/>
+<span>请输入页码:  </span><input type="text" placeholder="请输入页码" name="query-pageNo" value="1">
+<br/>
+<span>请输入分页数量:  </span><input type="text" placeholder="请输入分页数量" name="query-pageSize" value="10">
+<br/>
+<button id="submit-query">查询告警信息</button>
+<br>
+<button id="submit-query-bboss">通过bboss查询告警信息</button>
+<br>
+<hr>
+<br/>
+<span>pageNo: </span><div id="result-pageNo"></div>
+<hr>
+<span>pageSize: </span><div id="result-pageSize"></div>
+<hr>
+<span>total: </span><div id="result-total"></div>
+<hr>
+<span>es查询花费: </span><div id="result-took"></div><span> 毫秒</span>
+<hr>
+<span>整个方法花费: </span><div id="result-total-took"></div><span> 毫秒</span>
+<hr>
+
+<div style="border: 1px rebeccapurple" id="result"></div>
+
+<table id="result-table">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>视频</th>
+        <th>车牌号</th>
+        <th>所属机构</th>
+        <th>告警时间</th>
+        <th>告警类型</th>
+        <th>告警事件</th>
+        <th>告警等级</th>
+        <th>告警位置</th>
+        <th>详细位置</th>
+        <th>车速</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.0.3/jquery.js"></script>
+<script>
+    $(function () {
+        $('#submit-add').on('click', function () {
+            var imei = $("*[name='imei']").val();
+            var paiCode = $("*[name='paiCode']").val();
+
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:9001/deviceWarn/insert",
+                data: JSON.stringify({imei: imei, paiCode: paiCode}),
+                contentType: "application/json;charset=UTF-8",//指定消息请求类型
+                // dataType: "json",
+                success: function (result) {
+                    alert(result);
+                }
+            });
+
+        });
+
+        $('#submit-update').on('click', function () {
+            var id = $("*[name='id']").val();
+            $.ajax({
+                type: "PUT",
+                url: "http://localhost:9001/deviceWarn?id=" + id,
+                // contentType: "application/json;charset=UTF-8",//指定消息请求类型
+                // dataType: "json",
+                success: function (result) {
+                    alert(result);
+                }
+            });
+        });
+
+        $('#submit-del').on('click', function () {
+            var id = $("*[name='id']").val();
+            $.ajax({
+                type: "DELETE",
+                url: "http://localhost:9001/deviceWarn?id=" + id,
+                success: function (result) {
+                    alert(result);
+                }
+            });
+        });
+
+        $('#submit-query').on('click', function () {
+            var indexName=$("*[name='indexName']").val();
+            var startTime = $("*[name='query-startTime']").val();
+            var endTime = $("*[name='query-endTime']").val();
+            var alarmType = $("*[name='query-alarmType']").val();
+            var alarmSubType = $("*[name='query-alarmSubType']").val();
+            var org = $("*[name='query-org']").val();
+            var alarmLevel = $("*[name='query-alarmLevel']").val();
+            var tenantId = $("*[name='query-tenantId']").val();
+            var carplate = $("*[name='query-carplate']").val();
+            var pageNo = $("*[name='query-pageNo']").val();
+            var pageSize = $("*[name='query-pageSize']").val();
+            var query={
+                startTime:startTime,
+                endTime:endTime,
+                alarmType:alarmType,
+                alarmSubType:alarmSubType,
+                org:org,
+                alarmLevel:alarmLevel,
+                tenantId:tenantId,
+                carplate:carplate,
+                pageNo:pageNo,
+                pageSize:pageSize
+            };
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:9191/deviceWarn/query",
+                data: JSON.stringify(query),
+                contentType: "application/json;charset=UTF-8",//指定消息请求类型
+                // dataType: "json",
+                success: function (result) {
+                    var hits = result.hits;
+                    var total = result.total;
+                    var resultPageSize = result.pageSize;
+                    var resultPageNo = result.pageNo;
+                    var took0 = result.took0;
+                    var took1 = result.took1;
+                    var took="took0:"+took0+";took1:"+took1;
+                    var totalTook = result.totalTook;
+
+                    $('#result-total').html(total);
+                    $('#result-took').html(took);
+                    $('#result-total-took').html(totalTook);
+                    $('#result-pageNo').html(resultPageNo);
+                    $('#result-pageSize').html(resultPageSize);
+
+                    $('#result-table > tbody').empty();
+                    if(hits){
+                        for (var i = 0; i < hits.length; i++) {
+                            var hit = hits[i];
+
+                            var warnId = hit["warnId"];
+                            var originFileNameVal = hit["originFileName"];
+                            var carplateVal = hit["carplate"];
+                            var orgNameVal = hit["orgName"];
+                            var alarmTimeVal = hit["alarmTime"];
+                            var alarmTypeNameVal = hit["alarmTypeName"];
+                            var alarmSubTypeNameVal = hit["alarmSubTypeName"];
+                            var alarmLevelNameVal = hit["alarmLevelName"];
+                            var briefAddressVal = hit["briefAddress"];
+                            var addressVal = hit["address"];
+                            var speedVal = hit["speed"];
+
+                            var trHtml='<tr><td>'+warnId+'</td><td>'+originFileNameVal+'</td>' +
+                                '<td>'+carplateVal+'</td><td>'+orgNameVal+'</td>' +
+                                '<td>'+alarmTimeVal+'</td><td>'+alarmTypeNameVal+'</td>' +
+                                '<td>'+alarmSubTypeNameVal+'</td><td>'+alarmLevelNameVal+'</td>' +
+                                '<td>'+briefAddressVal+'</td><td>'+addressVal+'</td>' +
+                                '<td>'+speedVal+'</td>' +
+                                '</tr>';
+                            $('#result-table > tbody').append(trHtml)
+
+                        }
+                    }
+                    // $('#result').html(JSON.stringify(hits, null, '\t'));
+                }
+            });
+        });
+
+
+    })
+</script>
+</body>
+</html>

@@ -26,7 +26,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder builder) throws Exception{
 //        builder.inMemoryAuthentication().withUser("admin").password("{noop}123").roles("ADMIN").and()
 //                .withUser("root").password("{noop}123").roles("ROOT");
-        builder.inMemoryAuthentication().withUser("admin").password(passwordEncoder.encode("111")).roles("ADMIN").and()
+        builder.inMemoryAuthentication()
+                .withUser("admin").password(passwordEncoder.encode("111")).roles("ADMIN")
+                .and()
                 .withUser("user").password(passwordEncoder.encode("111")).roles("USER");
 
     }

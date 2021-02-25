@@ -23,4 +23,14 @@ server:
 #coupon:
 #  user:
 #    name: zn
+#security:
+#  oauth2:
+#    resource:
+#      user-info-uri: http://localhost:20000/api/user
+#      prefer-token-info: false
 #    age: 17
+
+zzn:
+  auth:
+    clientId: coupon-server
+    clientSecret: 123

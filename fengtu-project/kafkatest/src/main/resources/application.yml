@@ -1,0 +1,12 @@
+server:
+  port: 9002
+
+
+mybatis:
+  mapper-locations: classpath:mappers/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+spring:
+  profiles:
+    active: dev
