@@ -31,6 +31,9 @@
         <module>guli-coupon-api</module>
         <module>guli-gateway</module>
         <module>guli-auth</module>
+        <module>guli-client</module>
+        <module>security-common</module>
+        <module>guli-client2</module>
     </modules>
     <dependencyManagement>
         <dependencies>

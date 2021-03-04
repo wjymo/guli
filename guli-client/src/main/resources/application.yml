@@ -1,0 +1,25 @@
+spring:
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/guli-ums?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+#    driver-class-name: com.mysql.jdbc.Driver
+#    username: root
+#    password: root
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+  application:
+    name: guli-client
+
+ribbon:
+  ReadTimeout: 20000
+
+server:
+  port: 20001
+
+zzn:
+  auth:
+    clientId: client-server
+    clientSecret: 123
+    permitAll: /client/test/**,/client/test1/**
