@@ -26,11 +26,19 @@ public class OAuth2FeignRequestInterceptor implements RequestInterceptor {
             if (StringUtils.isEmpty(token)) {
                 token = request.getParameter("access_token");
                 if(StringUtils.isNotEmpty(token)){
-                    requestTemplate.header(AUTHORIZATION_HEADER, String.format("%s %s", BEARER_TOKEN_TYPE, token));
+                    processTokenOnRequest(requestTemplate,token);
                 }
             }else {
-                requestTemplate.header(AUTHORIZATION_HEADER, String.format("%s %s", BEARER_TOKEN_TYPE, token));
+                processTokenOnRequest(requestTemplate,token);
             }
+        }
+    }
+
+    private void processTokenOnRequest(RequestTemplate requestTemplate,String token){
+        if(StringUtils.startsWithIgnoreCase(token,BEARER_TOKEN_TYPE)){
+            requestTemplate.header(AUTHORIZATION_HEADER,  token);
+        }else {
+            requestTemplate.header(AUTHORIZATION_HEADER, String.format("%s %s", BEARER_TOKEN_TYPE, token));
         }
     }
 }

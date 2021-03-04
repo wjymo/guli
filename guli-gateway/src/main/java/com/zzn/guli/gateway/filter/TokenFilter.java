@@ -109,8 +109,6 @@ public class TokenFilter implements GlobalFilter, Ordered {
             }
         }
         if (StringUtils.startsWithIgnoreCase(token, "bearer")) {
-//            int length = "bearer ".length();
-//            token = token.substring(length);
             token=StringUtils.substringAfter(token,"bearer ");
         }
         return token;

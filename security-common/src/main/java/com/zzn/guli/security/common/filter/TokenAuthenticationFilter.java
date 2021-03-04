@@ -135,7 +135,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             logger.debug("Token not found in headers. Trying request parameters.");
             token = request.getParameter(ACCESS_TOKEN);
             if (token == null) {
-                logger.debug("Token not found in request parameters.  Not an OAuth2 request.");
+                logger.error("Token not found in request parameters.  Not an OAuth2 request.");
             }
         }
         if(StringUtils.startsWithIgnoreCase(token,"bearer")){
