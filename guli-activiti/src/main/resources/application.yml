@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/guli-activiti?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 123
+  activiti:
+    database-schema-update: true
+    history-level: full
+    db-history-used: true
+
+server:
+  port: 10007

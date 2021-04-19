@@ -28,9 +28,9 @@ public class CouponController  {
     @Autowired
     private CouponService couponService;
 
-    @Value("${coupon.user.name}")//从application.properties中获取//不要写user.name，他是环境里的变量
+    @Value("${coupon.user.name:huayo}")//从application.properties中获取//不要写user.name，他是环境里的变量
     private String name;
-    @Value("${coupon.user.age}")
+    @Value("${coupon.user.age:11}")
     private Integer age;
     @RequestMapping("/test")
     public R test(){

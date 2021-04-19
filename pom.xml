@@ -34,6 +34,10 @@
         <module>guli-client</module>
         <module>security-common</module>
         <module>guli-client2</module>
+        <module>selenium-test</module>
+        <module>guli-upload</module>
+        <module>guli-sort</module>
+        <module>guli-activiti</module>
     </modules>
     <dependencyManagement>
         <dependencies>

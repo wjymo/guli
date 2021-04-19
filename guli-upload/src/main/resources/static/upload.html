@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload！</title>
+    <link rel="stylesheet" type="text/css" href="./css/webuploader.css">
+</head>
+<body>
+<div id="uploader" class="wu-example">
+    <!--用来存放文件信息-->
+    <div id="thelist" class="uploader-list"></div>
+    <div class="btns">
+        <div id="picker">选择文件</div>
+        <button id="ctlBtn" class="btn btn-default">开始上传</button>
+    </div>
+    <button id="clearList" class="btn btn-default">清空列表</button>
+    <button id="getFiles" class="btn btn-default">查看文件列表</button>
+</div>
+
+<script src="js/xx.js"></script>
+<script src="https://raw.github.com/satazor/SparkMD5/master/spark-md5.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="http://cdn.staticfile.org/webuploader/0.1.0/webuploader.min.js"></script>
+<script>
+
+    $(function () {
+        var partSize = 1024;
+        var uploader = WebUploader.create({
+            // swf文件路径
+            // swf: BASE_URL + '/js/Uploader.swf',
+            // 文件接收服务端。
+            server: 'http://localhost:20002/upload/uploadchunk',
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: '#picker',
+            fileVal: "files",//文件上传域的name
+            duplicate: true,
+            // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+            // resize: false,
+            // fileSizeLimit :10*1024*1024, //验证文件总大小是否超出限制, 超出则不允许加入队列
+            // fileSingleSizeLimit :10*1024,
+            chunked: true,//开始分片上传
+            chunkSize: partSize  //每一片的大小
+            ,
+            multiple: true
+        });
+        // 当有文件被添加进队列的时候
+        uploader.on('fileQueued', function (file) {
+            var $li = $('<div id="' + file.id + '" class="item">' +
+                '<h4 class="info">' + file.name + '</h4>' +
+                '<p class="state">等待上传...</p>' +
+                '</div>')
+            $("#thelist").append($li);
+
+            fileReader = new FileReader()
+            // fileReader.readAsBinaryString(file);
+            fileReader.readAsDataURL(file);
+            fileReader.onload = function (e) {
+                var md5 = SparkMD5.hashBinary(e.target.result);
+                console.log(md5);
+            }
+        });
+        uploader.on('uploadBeforeSend', function (block, data) {
+            // block为分块数据。
+            // file为分块对应的file对象。
+            var file = block.file;
+            // 修改data可以控制发送哪些携带数据。
+
+            var id = file.id;
+            var uuid = $('#' + id).data("uuid");
+            var isEmpty = utils.isEmpty(uuid);
+            if (isEmpty) {
+                uuid = utils.uuid();
+                $('#' + id).data("uuid", uuid);
+            }
+            data.uid = uuid;
+        });
+        // 文件上传过程中创建进度条实时显示。
+        uploader.on('uploadProgress', function (file, percentage) {
+            var $li = $('#' + file.id),
+                $percent = $li.find('.progress .progress-bar');
+
+            // 避免重复创建
+            if (!$percent.length) {
+                $percent = $('<div class="progress progress-striped active">' +
+                    '<div class="progress-bar" role="progressbar" style="width: 0%">' +
+                    '</div>' +
+                    '</div>').appendTo($li).find('.progress-bar');
+            }
+
+            $li.find('p.state').text('上传中');
+
+            $percent.css('width', percentage * 100 + '%');
+        });
+        uploader.on('uploadSuccess', function (file) {
+            $('#' + file.id).find('p.state').text('已上传');
+            // console.log(file.id,"上传成功");
+            var uuid = $('#' + file.id).data("uuid");
+            console.log(file);
+            $.ajax({
+                url: "http://localhost:20002/upload/mergechunks?uid=" + uuid + "&partSize=" + partSize,
+                method: "post",
+                success: function (data) {
+                    if (data.code == 0) {
+                        alert("文件合并成功！")
+                    } else {
+                        alert("文件合并失败！")
+                    }
+                }, error: function (data) {
+                    alert("文件合并失败：" + JSON.stringify(data));
+                }
+            })
+        });
+
+        uploader.on('uploadError', function (file) {
+            $('#' + file.id).find('p.state').text('上传出错');
+        });
+
+        uploader.on('uploadComplete', function (file) {
+            $('#' + file.id).find('.progress').fadeOut();
+        });
+        $("#ctlBtn").click(function () {
+            uploader.upload();
+        });
+        $('#clearList').on('click', function () {
+            var files = uploader.getFiles();
+            // uploader.reset();
+            var fileLen = files.length;
+            // if(fileLen>1){
+            //     uploader.splice(0,fileLen-1);//清空上传队列
+            // }
+            $("#thelist").empty();
+        });
+        $('#getFiles').on('click', function () {
+            var files = uploader.getFiles();
+            console.log(files)
+            // alert(JSON.stringify(files))
+        });
+
+    });
+
+
+</script>
+
+</body>
+</html>

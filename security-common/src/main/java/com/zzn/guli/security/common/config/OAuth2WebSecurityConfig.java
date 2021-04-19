@@ -11,15 +11,21 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.*;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.util.Base64Utils;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
@@ -41,7 +47,7 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/client/api/**")
 //                .permitAll() //放过/haha不拦截
                 .anyRequest().authenticated();//其余所有请求都拦截
-
+        http.csrf().disable();
 
         String jwtKeyByAuth = null;
         Environment environment = SpringContextUtils.getEnvironment();
@@ -83,13 +89,7 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
         }
 
         http.addFilterBefore(new TokenAuthenticationFilter(jwtKeyByAuth), UsernamePasswordAuthenticationFilter.class);
-        http.exceptionHandling().accessDeniedHandler((req, resp, ex) -> {
-            resp.setCharacterEncoding("utf-8");
-            resp.setContentType("application/json");
-            CommonResponse commonResponse = ResponseUtil.error(ResultCode.ACCESS_ERROR);
-            String json = JSON.toJSONString(commonResponse);
-            resp.getWriter().print(json);
-        });
+        http.exceptionHandling().accessDeniedHandler(new MyAccessDeniedHandler());
         http.exceptionHandling().authenticationEntryPoint((req, resp, ex) -> {
             resp.setCharacterEncoding("utf-8");
             resp.setContentType("application/json");
@@ -99,10 +99,20 @@ public class OAuth2WebSecurityConfig extends WebSecurityConfigurerAdapter {
         });
     }
 
+    private class MyAccessDeniedHandler implements AccessDeniedHandler {
+        @Override
+        public void handle(HttpServletRequest req, HttpServletResponse resp, AccessDeniedException ex) throws IOException, ServletException {
+            resp.setCharacterEncoding("utf-8");
+            resp.setContentType("application/json");
+            CommonResponse commonResponse = ResponseUtil.error(ResultCode.ACCESS_ERROR);
+            String json = JSON.toJSONString(commonResponse);
+            resp.getWriter().print(json);
+        }
+    }
     @Override
     public void configure(WebSecurity web) throws Exception {
         //解决静态资源被拦截的问题
-        web.ignoring().antMatchers("/css/**","/js/**","/favicon.ico");
+        web.ignoring().antMatchers("/css/**","/js/**","/favicon.ico","/**/*.html");
     }
     /**
      * 通过这个Bean，去远程调用认证服务器，验token

@@ -1,0 +1,12 @@
+server:
+  port: 20002
+
+xc-service-manage-media:
+  upload-location: D:\temp\
+
+
+spring:
+  redis:
+    host: 10.82.183.134
+    port: 6379
+    password: 123456

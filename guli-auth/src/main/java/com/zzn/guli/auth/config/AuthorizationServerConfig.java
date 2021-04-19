@@ -61,7 +61,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .withClient("client2-server")
                 .secret(passwordEncoder().encode("123"))
                 .scopes("read","write")
-                .resourceIds("client")
+                .resourceIds("client2")
                 .authorizedGrantTypes("client_credentials", "refresh_token", "password", "authorization_code")
                 .accessTokenValiditySeconds(20 * 60)
                 .refreshTokenValiditySeconds(60*60)

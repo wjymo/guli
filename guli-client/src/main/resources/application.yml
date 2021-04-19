@@ -17,9 +17,20 @@ ribbon:
 
 server:
   port: 20001
-
 zzn:
   auth:
     clientId: client-server
     clientSecret: 123
-    permitAll: /client/test/**,/client/test1/**
+    permitAll: /client/test/**,/client/test1/**,/metrics/**
+management:
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    export:
+      prometheus:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+      base-path: /metrics
