@@ -8,6 +8,8 @@ spring:
     database-schema-update: true
     history-level: full
     db-history-used: true
-
+    deployment-mode: never-fail # 关闭 SpringAutoDeployment
 server:
   port: 10007
+
+logging.level.org.activiti.engine.impl.persistence.entity: debug
